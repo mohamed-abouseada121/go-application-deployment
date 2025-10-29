@@ -4,7 +4,7 @@ services:
   # --- API Service (Go Backend) ---
   api:
     build:
-      context: ./backend
+      context: ../backend
     restart: unless-stopped
     depends_on:
       - db # The API must wait for the database to be ready
@@ -15,7 +15,7 @@ services:
   # --- Nginx Service (Proxy) ---
   lb:
     build:
-     context: ./nginx
+     context: ../nginx
     restart: unless-stopped
     ports:
      - "6000:443"
