@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-deployment
+  labels:
+    app: app-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app-deployment
+  template:
+    metadata:
+      labels:
+        app: app-deployment
+    spec:
+      containers:
+      - name: app
+        image: mad3o/myapp-go
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+
+        volumeMounts:
+          - name: db-secret-volume
+            mountPath: "/run/secrets/db-password"
+            subPath: "db-password"
+            readOnly: true
+      volumes:
+      - name: db-secret-volume
+        secret:
+          secretName: mysql-secret-app
+          items:
+            - key: "db-password"
+              path: "db-password"

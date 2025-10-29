@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: mado-quota
+  namespace: mado
+spec:
+  hard:
+    requests.cpu: "2"      
+    requests.memory: "4Gi"   
+    limits.cpu: "4"        
+    limits.memory: "8Gi"     
+    requests.storage: "20Gi" 
+    persistentvolumeclaims: "10" 
+    pods: "10"
+    services: "5"           
+    secrets: "4"            
+    configmaps: "0"         
+    count/deployments: "5"   
+    count/statefulsets: "2"   

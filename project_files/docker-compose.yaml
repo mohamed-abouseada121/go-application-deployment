@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # --- API Service (Go Backend) ---
+  api:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    depends_on:
+      - db # The API must wait for the database to be ready
+    secrets:
+      - db-password # Grants the API container access to the secret
+    networks:
+     - internal_net
+  # --- Nginx Service (Proxy) ---
+  lb:
+    build:
+     context: ./nginx
+    restart: unless-stopped
+    ports:
+     - "6000:443"
+     - "6001:80"
+    depends_on:
+      - api
+    networks:
+     - internal_net
+     - external_net
+    command: [nginx-debug, '-g', 'daemon off;']
+ # --- Database Service (MySQL) ---
+  db:
+    image: mysql:8.0 # Use the official MySQL 8 image
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: example # Creates a database named 'example' as it was specified in the Go code
+      # The password for the root user is set using the secret file
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db-password #
+    secrets:
+      - db-password # Mounts the secret into the container at /run/secrets/db-password
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+     - internal_net
+  ubuntu:
+    image: ubuntu
+    networks:
+     - external_net
+    command: [bash]
+# --- Top-level secrets definition ---
+secrets:
+  db-password:
+    file: ./db_password.txt # Tells Docker Compose to read the secret from the local file
+volumes:
+  db_data:
+
+networks:
+  internal_net:
+    internal: true
+  external_net:
