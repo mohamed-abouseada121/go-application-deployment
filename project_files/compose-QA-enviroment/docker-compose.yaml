@@ -40,15 +40,10 @@ services:
       - db_data:/var/lib/mysql
     networks:
      - internal_net
-  ubuntu:
-    image: ubuntu
-    networks:
-     - external_net
-    command: [bash]
 # --- Top-level secrets definition ---
 secrets:
   db-password:
-    file: ./db_password.txt # Tells Docker Compose to read the secret from the local file
+    file: ./db-password.txt # Tells Docker Compose to read the secret from the local file
 volumes:
   db_data:
 

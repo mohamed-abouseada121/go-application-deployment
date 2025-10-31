@@ -18,7 +18,6 @@ It represents a **QA (Quality Assurance) environment** — designed for integrat
 | **lb** | Nginx reverse proxy & SSL termination (handles HTTPS/HTTP redirect). |
 | **api** | Go web API using `gorilla/mux`, exposes REST endpoints on port `8000`. |
 | **db** | MySQL 8.0 database, initialized with a test table and sample data. |
-| **ubuntu** | Lightweight Ubuntu container for manual QA testing (e.g., using `curl`). |
 
 ---
 
@@ -45,54 +44,35 @@ It represents a **QA (Quality Assurance) environment** — designed for integrat
 
 ## 🏗️ Setup Instructions
 
-### 1️⃣ Clone the repository
+### 1 Clone the repository
 ```bash
 git clone https://github.com/mohamed-abouseada121/go-application-deployment.git
 cd go-application-deployment
 ```
 
-### 2️⃣ Generate SSL certificate
-```bash
-chmod +x generate-ssl.sh
-./generate-ssl.sh
-```
 
-This creates:
-```
-./ssl/server.crt
-./ssl/server.key
-```
 
-### 3️⃣ Create database password file
+### 2 Create database password file
 Create a file named `db_password.txt` containing your MySQL root password:
 ```bash
 echo -n "your_password_here" > db_password.txt
 ```
 
-### 4️⃣ Build and start the services
+### 3 Build and start the services
 ```bash
 docker-compose up --build
 ```
 
-### 5️⃣ Test the setup
+### 4 Test the setup
 Open your browser or run:
 ```bash
-curl -k https://localhost:8000
+curl -k https://localhost:6000
 ```
 
 You should receive a response from the Go backend API through Nginx.
 
----
 
-## 🔍 QA Testing Container
 
-You can use the Ubuntu container to test internal communication:
-```bash
-docker exec -it ubuntu bash
-curl -k https://lb
-```
-
----
 
 ## 🗂️ Project Structure
 
@@ -117,7 +97,7 @@ curl -k https://lb
 | Resource | Purpose |
 |-----------|----------|
 | `internal_net` | Connects backend, database, and load balancer internally. |
-| `external_net` | Exposes Nginx to outside clients and the Ubuntu test container. |
+| `external_net` | Exposes Nginx to outside clients . |
 | `db-password` | Docker secret containing the MySQL root password. |
 
 ---
@@ -133,7 +113,7 @@ This project is licensed under the **MIT License** — feel free to use and modi
 **Mohamed Ahmed Abouseada**  
 - 🧠 Cloud  & DevOps Enthusiast  
 - 📧 [mohamedmohamedahmed172@gmail.com](mailto:mohamedmohamedahmed172@gmail.com)  
-- 💼 [LinkedIn](https://www.linkedin.com/in/mohamed-abouseada121/)  
+- 💼 [LinkedIn](https://www.linkedin.com/in/mohamed-abouseada-393a86275/)  
 - 💻 [GitHub](https://github.com/mohamed-abouseada121)
 
 ---
